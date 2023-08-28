@@ -5,9 +5,9 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
 
-    private final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 10000;
     Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
+    private int size;
 
     void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -38,6 +38,7 @@ public class ArrayStorage {
                 storage[i] = storage[size - 1];
                 storage[size - 1] = null;
                 size--;
+                break;
             }
         }
     }
@@ -46,7 +47,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return  Arrays.copyOfRange(storage,0,size);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     int size() {
