@@ -37,7 +37,6 @@ public class ArrayStorage {
             return null;
         }
         return storage[index];
-
     }
 
     public void delete(String uuid) {
