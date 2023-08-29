@@ -19,52 +19,46 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (r != null) {
-            int index = getIndex(r.getUuid());
-            if (index == -1) {
-                if (size >= STORAGE_LIMIT) {
-                    System.out.println("Storage overflow!");
-                } else {
-                    storage[size] = r;
-                    size++;
-                }
-            } else {
-                System.out.println("Resume with uuid = " + r.getUuid() + " is exist");
-            }
+        int index = getIndex(r.getUuid());
+        if (size >= STORAGE_LIMIT) {
+            System.out.println("Storage overflow!");
+        } else if (index > 0) {
+            System.out.println("Resume with uuid = " + r.getUuid() + " is exist");
+        } else {
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("Resume with uuid = " + uuid + " not found");
             return null;
-        } else {
-            return storage[index];
         }
+        return storage[index];
+
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index != -1) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
+        if (index < 0) {
             System.out.println("Resume with uuid = " + uuid + " not found");
+            return;
         }
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     public void update(Resume r) {
-        if (r != null) {
-            int index = getIndex(r.getUuid());
-            if (index != -1) {
-                storage[index] = r;
-                System.out.println("Resume with uuid = " + r.getUuid() + " was successfully updated");
-            } else {
-                System.out.println("Resume with uuid = " + r.getUuid() + " is not exist");
-            }
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
+            System.out.println("Resume with uuid = " + r.getUuid() + " not found");
+            return;
         }
+        storage[index] = r;
+        System.out.println("Resume with uuid = " + r.getUuid() + " was successfully updated");
     }
 
     /**
