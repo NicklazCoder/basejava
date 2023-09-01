@@ -9,51 +9,6 @@ import java.util.Arrays;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow!");
-        } else if (index > 0) {
-            System.out.println("Resume with uuid = " + r.getUuid() + " is exist");
-        } else {
-            storage[size] = r;
-            size++;
-        }
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("Resume with uuid = " + uuid + " not found");
-            return;
-        }
-        storage[index] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
-    }
-
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            System.out.println("Resume with uuid = " + r.getUuid() + " not found");
-            return;
-        }
-        storage[index] = r;
-        System.out.println("Resume with uuid = " + r.getUuid() + " was successfully updated");
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
     protected int getIndex(final String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
@@ -61,5 +16,10 @@ public class ArrayStorage extends AbstractArrayStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void insertResume(Resume r) {
+        storage[size] = r;
     }
 }
