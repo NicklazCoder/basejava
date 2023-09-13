@@ -40,6 +40,9 @@ class AbstractArrayStorageTest {
 
     @Test
     void update() {
+        Resume updatedResume = new Resume(UUID_1);
+        storage.update(updatedResume);
+        Assertions.assertEquals(updatedResume, storage.get(UUID_1));
     }
 
     @Test
@@ -61,10 +64,11 @@ class AbstractArrayStorageTest {
 
     @Test
     void getAll() {
-        Assertions.assertEquals(3,storage.size());
-        Assertions.assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
-        Assertions.assertEquals(RESUME_2, storage.get(RESUME_2.getUuid()));
-        Assertions.assertEquals(RESUME_3, storage.get(RESUME_3.getUuid()));
+        Resume[] temp = storage.getAll();
+        Assertions.assertEquals(3, temp.length);
+        Assertions.assertEquals(RESUME_1, temp[0]);
+        Assertions.assertEquals(RESUME_2, temp[1]);
+        Assertions.assertEquals(RESUME_3, temp[2]);
     }
 
     @Test
@@ -86,6 +90,12 @@ class AbstractArrayStorageTest {
     void saveIsExist() {
         Assertions.assertThrows(ExistStorageException.class, () -> storage.save(RESUME_1));
     }
+
+    @Test
+    void updateNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.update(new Resume("dummy")));
+    }
+
     @Test
     void saveOverflow() {
         Assertions.assertThrows(StorageException.class, () -> {
