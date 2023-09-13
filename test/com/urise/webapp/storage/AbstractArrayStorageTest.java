@@ -35,7 +35,7 @@ class AbstractArrayStorageTest {
     @Test
     void clear() {
         storage.clear();
-        Assertions.assertEquals(0, storage.size());
+        assertSize(0);
     }
 
     @Test
@@ -48,7 +48,7 @@ class AbstractArrayStorageTest {
     @Test
     void save() {
         storage.save(new Resume());
-        Assertions.assertEquals(4, storage.size());
+        assertSize(4);
     }
 
     @Test
@@ -59,7 +59,7 @@ class AbstractArrayStorageTest {
     @Test
     void delete() {
         storage.delete(UUID_1);
-        Assertions.assertEquals(2, storage.size());
+        assertSize(2);
     }
 
     @Test
@@ -73,7 +73,7 @@ class AbstractArrayStorageTest {
 
     @Test
     void size() {
-        Assertions.assertEquals(3, storage.size());
+        assertSize(3);
     }
 
     @Test
@@ -109,5 +109,9 @@ class AbstractArrayStorageTest {
             storage.save(new Resume());
 
         });
+    }
+
+    private void assertSize(int size) {
+        Assertions.assertEquals(size, storage.size());
     }
 }
