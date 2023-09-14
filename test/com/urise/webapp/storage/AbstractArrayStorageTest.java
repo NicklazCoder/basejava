@@ -36,6 +36,7 @@ class AbstractArrayStorageTest {
     void clear() {
         storage.clear();
         assertSize(0);
+        Assertions.assertArrayEquals(storage.getAll(), new Resume[]{});
     }
 
     @Test
@@ -47,28 +48,31 @@ class AbstractArrayStorageTest {
 
     @Test
     void save() {
-        storage.save(new Resume());
+        Resume resume = new Resume();
+        storage.save(resume);
         assertSize(4);
+        assertGet(resume);
     }
 
     @Test
     void get() {
-        Assertions.assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
     }
 
     @Test
     void delete() {
-        storage.delete(UUID_1);
+        storage.delete(RESUME_1.getUuid());
         assertSize(2);
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(RESUME_1.getUuid()));
     }
 
     @Test
     void getAll() {
-        Resume[] temp = storage.getAll();
-        Assertions.assertEquals(3, temp.length);
-        Assertions.assertEquals(RESUME_1, temp[0]);
-        Assertions.assertEquals(RESUME_2, temp[1]);
-        Assertions.assertEquals(RESUME_3, temp[2]);
+        Resume[] actual = storage.getAll();
+        assertSize(3);
+        Assertions.assertArrayEquals(actual, new Resume[]{RESUME_1, RESUME_2, RESUME_3});
     }
 
     @Test
@@ -100,7 +104,8 @@ class AbstractArrayStorageTest {
     void saveOverflow() {
         Assertions.assertThrows(StorageException.class, () -> {
             try {
-                for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.clear();
+                for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                     storage.save(new Resume());
                 }
             } catch (StorageException e) {
@@ -113,5 +118,9 @@ class AbstractArrayStorageTest {
 
     private void assertSize(int size) {
         Assertions.assertEquals(size, storage.size());
+    }
+
+    private void assertGet(Resume r) {
+        Assertions.assertEquals(r, storage.get(r.getUuid()));
     }
 }
