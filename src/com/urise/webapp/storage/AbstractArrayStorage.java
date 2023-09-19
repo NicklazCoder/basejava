@@ -16,12 +16,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = (Integer) getSearchKey(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        }
-        storage[index] = r;
+    public void doUpdate(Resume r, Object searchKey) {
+        storage[(Integer) searchKey] = r;
         System.out.println("Resume with uuid = " + r.getUuid() + " was successfully updated");
     }
 
@@ -33,17 +29,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             size++;
         }
     }
+
     @Override
     public Resume doGet(Object index) {
         return storage[(Integer) index];
     }
 
-    public void delete(String uuid) {
-        int index = (Integer) getSearchKey(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        deleteResume(index);
+    public void doDelete(Object searchKey) {
+        deleteResume((Integer) searchKey);
         storage[size - 1] = null;
         size--;
     }
