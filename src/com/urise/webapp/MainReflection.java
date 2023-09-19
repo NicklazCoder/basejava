@@ -13,7 +13,7 @@ public class MainReflection {
         field.setAccessible(true);
         System.out.println(field.getName());
         System.out.println(field.get(resume));
-        field.set(resume,"new_uuid");
+        field.set(resume, "new_uuid");
         Method method = resume.getClass().getMethod("toString");
         System.out.println(method.invoke(resume));
         System.out.println(resume);
