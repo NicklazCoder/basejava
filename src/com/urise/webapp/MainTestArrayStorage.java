@@ -3,13 +3,14 @@ package com.urise.webapp;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.ListStorage;
+import com.urise.webapp.storage.MapStorage;
 import com.urise.webapp.storage.Storage;
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final Storage ARRAY_STORAGE = new ListStorage();
+    private static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume();
@@ -23,7 +24,7 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+     //   System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         System.out.println("Resume r1 update ");
         ARRAY_STORAGE.update(r1);
