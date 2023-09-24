@@ -14,11 +14,6 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
-    }
-
-    @Override
     public int size() {
         return storage.size();
     }
@@ -36,6 +31,11 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Resume doGet(Object uuid) {
         return storage.get((Integer) uuid);
+    }
+
+    @Override
+    protected List<Resume> doCopy() {
+        return new ArrayList<>(storage);
     }
 
     @Override
