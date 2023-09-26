@@ -19,7 +19,7 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
             try {
                 storage.clear();
                 for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                    storage.save(new Resume("i"));
+                    storage.save(new Resume(Integer.toString(i)));
                 }
             } catch (StorageException e) {
                 Assertions.fail();
