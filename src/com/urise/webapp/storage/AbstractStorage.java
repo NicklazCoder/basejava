@@ -25,7 +25,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    private static final Comparator<Resume> resumeComparator = ((o1, o2) ->
+    private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) ->
             o1.getFullName().compareTo(o2.getFullName()) != 0 ?
                     o1.getFullName().compareTo(o2.getFullName()) : o1.getUuid().compareTo(o2.getUuid()));
 
@@ -62,7 +62,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
         List<Resume> list = doCopy();
-        list.sort(resumeComparator);
+        list.sort(RESUME_COMPARATOR);
         return list;
     }
 
