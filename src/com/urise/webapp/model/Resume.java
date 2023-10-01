@@ -1,6 +1,6 @@
 package com.urise.webapp.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,8 +12,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<ContactType,String> contacts = new HashMap<>();
-    private final Map<SectionType,Section> sections = new HashMap<>();
+    private final Map<ContactType,String> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
