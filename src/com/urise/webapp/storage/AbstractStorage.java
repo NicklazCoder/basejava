@@ -11,6 +11,11 @@ import java.util.logging.Logger;
 public abstract class AbstractStorage<SK> implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
+    private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) ->
+            o1.getFullName().compareTo(o2.getFullName()) != 0 ?
+                    o1.getFullName().compareTo(o2.getFullName()) : o1.getUuid().compareTo(o2.getUuid()));
+
+    //private static final Comparator<Resume> RESUME_COMPARATOR1 = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
     protected abstract SK getSearchKey(String uuid);
 
     protected abstract Resume doGet(SK uuid);
@@ -24,10 +29,6 @@ public abstract class AbstractStorage<SK> implements Storage {
     protected abstract void doDelete(SK searchKey);
 
     protected abstract boolean isExist(SK searchKey);
-
-    private static final Comparator<Resume> resumeComparator = ((o1, o2) ->
-            o1.getFullName().compareTo(o2.getFullName()) != 0 ?
-                    o1.getFullName().compareTo(o2.getFullName()) : o1.getUuid().compareTo(o2.getUuid()));
 
     @Override
     public void update(Resume r) {
@@ -62,7 +63,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
         List<Resume> list = doCopy();
-        list.sort(resumeComparator);
+        list.sort(RESUME_COMPARATOR);
         return list;
     }
 
