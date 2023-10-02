@@ -12,8 +12,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<ContactType,String> contacts = new EnumMap<>(ContactType.class);
-    private final Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
+    protected final Map<ContactType,String> contacts = new EnumMap<>(ContactType.class);
+    protected final Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String uuid, String fullName) {
         this.uuid = uuid;
@@ -31,6 +31,21 @@ public class Resume {
     public String getFullName() {
         return fullName;
     }
+
+    public String getContacts(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public Section getSections(SectionType type) {
+        return sections.get(type);
+    }
+    public void setContact(ContactType type, String content) {
+        contacts.put(type, content);
+    }
+    public void setSections(SectionType type, Section content) {
+        sections.put(type, content);
+    }
+
 
     @Override
     public boolean equals(Object o) {
