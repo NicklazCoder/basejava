@@ -25,6 +25,22 @@ public class Period {
                 '}';
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

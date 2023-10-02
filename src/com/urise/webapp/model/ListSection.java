@@ -16,6 +16,10 @@ public class ListSection extends Section{
                 '}';
     }
 
+    public List<String> getElements() {
+        return elements;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
