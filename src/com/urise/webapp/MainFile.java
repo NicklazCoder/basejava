@@ -12,10 +12,10 @@ public class MainFile {
         System.out.println(file.getCanonicalPath());
         File dir = new File("./src/com/urise/webapp");
         System.out.println(dir.isDirectory());
-        String[] list = dir.list();
+        File[] list = dir.listFiles();
         if (list != null) {
-            for (String name : list) {
-                System.out.println(name);
+            for (File name : list) {
+                System.out.println(name.getName());
             }
         }
         try (FileInputStream fis = new FileInputStream(path)) {
@@ -23,7 +23,25 @@ public class MainFile {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("***Recursive call start***");
+        readDirectory(dir);
+        System.out.println("***Recursive call end***");
+    }
 
-
+    private static void readDirectory(File directory) {
+        if (directory.isDirectory()) {
+            File[] list = directory.listFiles();
+            if (list != null) {
+                System.out.println("List of Directory: " + directory.getName());
+                for (File file : list) {
+                    if (file.isFile()) {
+                        System.out.println(file.getName());
+                    } else {
+                        System.out.println("Directory: " + file.getName());
+                        readDirectory(file);
+                    }
+                }
+            }
+        }
     }
 }
