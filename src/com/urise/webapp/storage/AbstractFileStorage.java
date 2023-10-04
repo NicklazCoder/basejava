@@ -5,6 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,13 +29,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected Resume doGet(File uuid) {
-        return null;
+    protected Resume doGet(File file) {
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("File read error ", file.getName(), e);
+        }
     }
 
     @Override
     protected List<Resume> doCopy() {
-        return null;
+        File[] listFiles = directory.listFiles();
+        if (listFiles == null) {
+            throw new StorageException("List of files is null, Storage error", null);
+        }
+        List<Resume> list = new ArrayList<>();
+        for (File file : listFiles) {
+            list.add(doGet(file));
+        }
+        return list;
     }
 
     @Override
@@ -46,15 +59,29 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new StorageException("IO error", file.getName(), e);
         }
     }
-    protected abstract void doWrite(Resume r, File file) throws IOException;
-    @Override
-    protected void doUpdate(Resume r, File searchKey) {
 
+    protected abstract void doWrite(Resume r, File file) throws IOException;
+
+    protected abstract Resume doRead(File file) throws IOException;
+
+    @Override
+    protected void doUpdate(Resume r, File file) {
+        try {
+            doWrite(r, file);
+        } catch (IOException e) {
+            throw new StorageException("File update error" + file.getAbsolutePath(), file.getName());
+        }
     }
 
     @Override
-    protected void doDelete(File searchKey) {
-
+    protected void doDelete(File file) {
+        if (file.canWrite() && file.canRead()) {
+            if (!file.delete()) {
+                throw new StorageException("File delete error", file.getName());
+            }
+        } else {
+            throw new StorageException("DELETE: You don't have permission for this operation", file.getName());
+        }
     }
 
     @Override
@@ -64,11 +91,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
+        File[] listFiles = directory.listFiles();
+        if (listFiles != null) {
+            for (File file : listFiles) {
+                doDelete(file);
+            }
+        }
 
     }
 
     @Override
     public int size() {
-        return 0;
+        File[] listFile = directory.listFiles();
+        if (listFile == null) {
+            throw new StorageException("Directory read error", null);
+        }
+        return listFile.length;
     }
 }
