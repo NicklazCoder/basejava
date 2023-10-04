@@ -25,9 +25,9 @@ abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
 
     static {
-        RESUME_1 = new Resume(UUID_1, NAME_1);
-        RESUME_2 = new Resume(UUID_2, NAME_2);
-        RESUME_3 = new Resume(UUID_3, NAME_3);
+        RESUME_1 = ResumeTestData.createResume(UUID_1, NAME_1);
+        RESUME_2 = ResumeTestData.createResume(UUID_2, NAME_2);
+        RESUME_3 = ResumeTestData.createResume(UUID_3, NAME_3);
     }
 
     AbstractStorageTest(Storage storage) {
@@ -58,7 +58,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void save() {
-        Resume resume = new Resume("dummy");
+        Resume resume = ResumeTestData.createResume("uuid0","dummy");
         storage.save(resume);
         assertSize(4);
         assertGet(resume);
