@@ -1,9 +1,14 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class ListSection extends Section{
+public class ListSection extends Section {
     private final List<String> elements;
+
+    public ListSection(String... elements) {
+        this(Arrays.asList(elements));
+    }
 
     public ListSection(List<String> elements) {
         this.elements = elements;
