@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 abstract class AbstractStorageTest {
+    protected static final File STORAGE_DIR = new File("D:\\IT\\basejava\\storage");
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String NAME_1 = "Tomas";
@@ -58,7 +60,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void save() {
-        Resume resume = ResumeTestData.createResume("uuid0","dummy");
+        Resume resume = ResumeTestData.createResume("uuid0", "dummy");
         storage.save(resume);
         assertSize(4);
         assertGet(resume);

@@ -1,6 +1,10 @@
 package com.urise.webapp.model;
 
+import java.io.Serial;
+
 public class TextSection extends Section {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String content;
 
     public TextSection(String content) {
