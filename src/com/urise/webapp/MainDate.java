@@ -21,7 +21,7 @@ public class MainDate {
 
         LocalDate ld = LocalDate.now();
         LocalTime lt = LocalTime.now();
-        LocalDateTime ldt = LocalDateTime.of(ld,lt);
+        LocalDateTime ldt = LocalDateTime.of(ld, lt);
         System.out.println(ldt);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd");

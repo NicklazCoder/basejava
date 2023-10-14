@@ -15,7 +15,7 @@ public class TestSingleton {
 
     public static void main(String[] args) {
         System.out.println(TestSingleton.getInstance().toString());
-        for(SectionType type : SectionType.values()) {
+        for (SectionType type : SectionType.values()) {
             System.out.println(type.getTitle());
         }
     }
