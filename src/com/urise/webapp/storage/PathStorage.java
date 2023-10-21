@@ -70,8 +70,10 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void doDelete(Path file) {
-        if (!Files.isWritable(file) || !Files.isReadable(file))
+        if (!Files.isWritable(file) || !Files.isReadable(file)) {
             throw new StorageException("DELETE: You don't have permission for this operation", getFileName(file));
+        }
+
         try {
             Files.delete(file);
         } catch (IOException e) {
