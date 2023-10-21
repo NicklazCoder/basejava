@@ -118,19 +118,19 @@ public class ResumeTestData {
         resume.setSections(SectionType.EDUCATION, new OrganizationSection(List.of(EDUCATION_SCHOOL, EDUCATION_UNIVERSITY, EDUCATION_ALCATEL, EDUCATION_SIEMENS, EDUCATION_LUXOFT, EDUCATION_COURSERA)));
 
         System.out.println(resume.getFullName());
-        System.out.println(resume.getContacts(ContactType.MOBILE));
-        System.out.println(resume.getContacts(ContactType.SKYPE));
-        System.out.println(resume.getContacts(ContactType.MAIL));
-        System.out.println(resume.getContacts(ContactType.LINKEDIN));
-        System.out.println(resume.getContacts(ContactType.GITHUB));
-        System.out.println(resume.getContacts(ContactType.STACKOVERFLOW));
-        System.out.println(resume.getContacts(ContactType.HOME_PAGE));
-        System.out.println(resume.getSections(SectionType.OBJECTIVE));
-        System.out.println(resume.getSections(SectionType.PERSONAL));
-        System.out.println(resume.getSections(SectionType.ACHIEVEMENT));
-        System.out.println(resume.getSections(SectionType.QUALIFICATIONS));
-        System.out.println(resume.getSections(SectionType.EXPERIENCE));
-        System.out.println(resume.getSections(SectionType.EDUCATION));
+        System.out.println(resume.getContact(ContactType.MOBILE));
+        System.out.println(resume.getContact(ContactType.SKYPE));
+        System.out.println(resume.getContact(ContactType.MAIL));
+        System.out.println(resume.getContact(ContactType.LINKEDIN));
+        System.out.println(resume.getContact(ContactType.GITHUB));
+        System.out.println(resume.getContact(ContactType.STACKOVERFLOW));
+        System.out.println(resume.getContact(ContactType.HOME_PAGE));
+        System.out.println(resume.getSection(SectionType.OBJECTIVE));
+        System.out.println(resume.getSection(SectionType.PERSONAL));
+        System.out.println(resume.getSection(SectionType.ACHIEVEMENT));
+        System.out.println(resume.getSection(SectionType.QUALIFICATIONS));
+        System.out.println(resume.getSection(SectionType.EXPERIENCE));
+        System.out.println(resume.getSection(SectionType.EDUCATION));
     }
 
     protected static Resume createResume(String uuid, String fullName) {
