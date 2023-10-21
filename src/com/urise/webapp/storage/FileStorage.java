@@ -11,29 +11,32 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    private StreamSerializer streamSerializer;
+    private final StreamSerializer serializer;
 
     @Override
     protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
     }
 
-    protected FileStorage(File directory, StreamSerializer streamSerializer) {
+    protected FileStorage(File directory, StreamSerializer serializer) {
+        Objects.requireNonNull(serializer, "streamSerializer must not be null");
+        this.serializer = serializer;
+
         Objects.requireNonNull(directory, "directory must not be null");
-        this.streamSerializer = streamSerializer;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
         if (!directory.canRead() || !directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
+
         this.directory = directory;
     }
 
     @Override
     protected Resume doGet(File file) {
         try {
-            return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return serializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File read error ", file.getName(), e);
         }
@@ -55,7 +58,9 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doSave(Resume r, File file) {
         try {
-            file.createNewFile();
+            if (file.createNewFile()) {
+                throw new StorageException(file + " already exist");
+            }
         } catch (IOException e) {
             throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
@@ -65,7 +70,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            serializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File update error" + file.getAbsolutePath(), file.getName());
         }
@@ -90,12 +95,12 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] listFiles = directory.listFiles();
-        if (listFiles != null) {
-            for (File file : listFiles) {
-                doDelete(file);
-            }
+        if (listFiles == null) {
+            throw new StorageException("I/O error");
         }
-
+        for (File file : listFiles) {
+            doDelete(file);
+        }
     }
 
     @Override

@@ -16,13 +16,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
-    private Path directory;
-    private StreamSerializer streamSerializer;
+    private final Path directory;
+    private final StreamSerializer serializer;
 
-    protected PathStorage(String dir, StreamSerializer streamSerializer) {
+    protected PathStorage(String dir, StreamSerializer serializer) {
         Objects.requireNonNull(dir, "directory must not be null");
-        this.streamSerializer = streamSerializer;
         directory = Paths.get(dir);
+        Objects.requireNonNull(serializer, "directory must not be null");
+        this.serializer = serializer;
+
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
@@ -36,7 +38,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path file) {
         try {
-            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(file)));
+            return serializer.doRead(new BufferedInputStream(Files.newInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Path read error ", getFileName(file), e);
         }
@@ -60,7 +62,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path file) {
         try {
-            streamSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(file)));
+            serializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Path update error" + getFileName(file), e);
         }
@@ -68,14 +70,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void doDelete(Path file) {
-        if (Files.isWritable(file) && Files.isReadable(file)) {
-            try {
-                Files.delete(file);
-            } catch (IOException e) {
-                throw new StorageException("File delete error", getFileName(file), e);
-            }
-        } else {
+        if (!Files.isWritable(file) || !Files.isReadable(file))
             throw new StorageException("DELETE: You don't have permission for this operation", getFileName(file));
+        try {
+            Files.delete(file);
+        } catch (IOException e) {
+            throw new StorageException("File delete error", getFileName(file), e);
         }
     }
 
