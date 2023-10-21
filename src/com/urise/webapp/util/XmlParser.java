@@ -11,7 +11,7 @@ public class XmlParser {
     private final Marshaller marshaller;
     private final Unmarshaller unmarshaller;
 
-    public XmlParser(Class... classesToBeBound) {
+    public XmlParser(Class<?> ... classesToBeBound) {
         try {
             JAXBContext ctx = JAXBContext.newInstance(classesToBeBound);
 
