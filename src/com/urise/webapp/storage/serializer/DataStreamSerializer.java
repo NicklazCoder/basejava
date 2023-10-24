@@ -11,35 +11,49 @@ public class DataStreamSerializer implements StreamSerializer {
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
-            dos.writeUTF(r.getUuid());
-            dos.writeUTF(r.getFullName());
-            MapWriter(dos, r.getContacts().entrySet(), entry -> {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            });
+            ContactsWriter(r, dos);
             MapWriter(dos, r.getSections().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
                 dos.writeUTF(type.name());
                 switch (type) {
-                    case PERSONAL, OBJECTIVE -> dos.writeUTF(((TextSection) section).getContent());
-                    case ACHIEVEMENT, QUALIFICATIONS ->
-                            MapWriter(dos, ((ListSection) section).getElements(), dos::writeUTF);
-                    case EDUCATION, EXPERIENCE ->
-                            MapWriter(dos, ((OrganizationSection) section).getOrganizations(), entryOrg -> {
-                                dos.writeUTF(entryOrg.getName());
-                                dos.writeUTF(entryOrg.getHomePage());
-                                MapWriter(dos, entryOrg.getPeriods(), entryPeriods -> {
-                                    dos.writeUTF(entryPeriods.getTitle());
-                                    dos.writeUTF(entryPeriods.getDescription());
-                                    dos.writeUTF(entryPeriods.getStartDate().toString());
-                                    dos.writeUTF(entryPeriods.getEndDate().toString());
-                                });
-
-                            });
+                    case PERSONAL, OBJECTIVE -> TextSectionWriter(dos, (TextSection) section);
+                    case ACHIEVEMENT, QUALIFICATIONS -> ListSectionWriter(dos, (ListSection) section);
+                    case EDUCATION, EXPERIENCE -> OrganizationSectionWriter(dos, (OrganizationSection) section);
                 }
             });
         }
+    }
+
+    private void OrganizationSectionWriter(DataOutputStream dos, OrganizationSection section) {
+        MapWriter(dos, section.getOrganizations(), entryOrg -> {
+            dos.writeUTF(entryOrg.getName());
+            dos.writeUTF(entryOrg.getHomePage());
+            MapWriter(dos, entryOrg.getPeriods(), entryPeriods -> {
+                dos.writeUTF(entryPeriods.getTitle());
+                dos.writeUTF(entryPeriods.getDescription());
+                dos.writeUTF(entryPeriods.getStartDate().toString());
+                dos.writeUTF(entryPeriods.getEndDate().toString());
+            });
+
+        });
+    }
+
+    private void ListSectionWriter(DataOutputStream dos, ListSection section) {
+        MapWriter(dos, section.getElements(), dos::writeUTF);
+    }
+
+    private void TextSectionWriter(DataOutputStream dos, TextSection section) throws IOException {
+        dos.writeUTF(section.getContent());
+    }
+
+    private void ContactsWriter(Resume r, DataOutputStream dos) throws IOException {
+        dos.writeUTF(r.getUuid());
+        dos.writeUTF(r.getFullName());
+        MapWriter(dos, r.getContacts().entrySet(), entry -> {
+            dos.writeUTF(entry.getKey().name());
+            dos.writeUTF(entry.getValue());
+        });
     }
 
     @Override
@@ -89,6 +103,7 @@ public class DataStreamSerializer implements StreamSerializer {
             throw new RuntimeException(e);
         }
     }
+
     //TODO
     private Section SectionReader(DataInputStream dis, SectionType sectionType) throws IOException {
         switch (sectionType) {
