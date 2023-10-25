@@ -1,11 +1,12 @@
 package com.urise.webapp.storage.serializer;
 
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
@@ -62,31 +63,51 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            ItemReader(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            ItemReader(dis, () -> {
+            ItemsReader(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            ItemsReader(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
-                //resume.setSections(type,);
+                resume.setSections(type, SectionReader(dis, type));
             });
             return resume;
-        } catch (IOException e) {
-            throw new StorageException("Error read resume", e);
         }
     }
 
 
+    private Section SectionReader(DataInputStream dis, SectionType sectionType) throws IOException {
+        switch (sectionType) {
+            case PERSONAL, OBJECTIVE -> {
+                return new TextSection(dis.readUTF());
+            }
+            case ACHIEVEMENT, QUALIFICATIONS -> {
+                return new ListSection(ListReader(dis, dis::readUTF));
+            }
+            case EDUCATION, EXPERIENCE -> {
+                return new OrganizationSection(ListReader(dis, () ->
+                        new Organization(dis.readUTF(), dis.readUTF(),
+                                ListReader(dis, () ->
+                                        new Period(dis.readUTF(), dis.readUTF(),
+                                                LocalDate.parse(dis.readUTF()), LocalDate.parse(dis.readUTF()))))));
+            }
+            default -> throw new IllegalStateException();
+        }
+    }
+
     private interface ItemWriter<T> {
         void write(T o) throws IOException;
+
     }
 
     private interface ItemProcess {
         void process() throws IOException;
+
     }
 
     private interface ItemReader<T> {
         T read() throws IOException;
+
     }
 
-    private void ItemReader(DataInputStream dis, ItemProcess processor) throws IOException {
+    private void ItemsReader(DataInputStream dis, ItemProcess processor) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             processor.process();
@@ -104,16 +125,16 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    //TODO
-    private Section SectionReader(DataInputStream dis, SectionType sectionType) throws IOException {
-        switch (sectionType) {
-            case PERSONAL, OBJECTIVE -> {
-                return new TextSection(dis.readUTF());
+    private <T> List<T> ListReader(DataInputStream dis, ItemReader<T> reader) {
+        try {
+            int size = dis.readInt();
+            List<T> list = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                list.add(reader.read());
             }
-            case ACHIEVEMENT, QUALIFICATIONS -> {
-                return null;
-            }
-            default -> throw new IllegalStateException();
+            return list;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

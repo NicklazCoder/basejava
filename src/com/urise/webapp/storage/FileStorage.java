@@ -58,7 +58,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doSave(Resume r, File file) {
         try {
-            if (file.createNewFile()) {
+            if (!file.createNewFile()) {
                 throw new StorageException(file + " already exist");
             }
         } catch (IOException e) {
