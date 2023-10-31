@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
-    public void doWrite(Resume r, OutputStream os) throws IOException {
+    public void doWrite(Resume r, OutputStream os) {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             writeContacts(r, dos);
             writeCollection(dos, r.getSections().entrySet(), entry -> {
@@ -24,7 +24,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
             });
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private interface ItemWriter<T> {
-        void write(T o) throws IOException;
+        void write(T item) throws IOException;
     }
 
     private interface ItemProcessor {
