@@ -1,7 +1,5 @@
 package com.urise.webapp.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
 
 public class TextSection extends Section {

@@ -20,8 +20,8 @@ public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Unique identifier
-    private  String uuid;
-    private  String fullName;
+    private String uuid;
+    private String fullName;
     protected final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     protected final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 

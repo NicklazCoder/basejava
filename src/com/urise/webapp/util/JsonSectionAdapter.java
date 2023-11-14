@@ -24,7 +24,7 @@ public class JsonSectionAdapter<T> implements JsonSerializer<T>, JsonDeserialize
     @Override
     public JsonElement serialize(T t, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject retValue = new JsonObject();
-        retValue.addProperty(CLASSNAME,t.getClass().getName());
+        retValue.addProperty(CLASSNAME, t.getClass().getName());
         JsonElement jsonElement = jsonSerializationContext.serialize(t);
         retValue.add(INSTANCE, jsonElement);
         return retValue;
