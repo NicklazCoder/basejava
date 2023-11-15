@@ -135,23 +135,23 @@ public class ResumeTestData {
 
     protected static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        resume.setContact(ContactType.HOME_PHONE, "+375171111111");
-        resume.setContact(ContactType.PHONE, "+375171111111");
-        resume.setContact(ContactType.MOBILE, "+375291111111");
-        resume.setContact(ContactType.SKYPE, "Test.skype");
-        resume.setContact(ContactType.MAIL, "Test@gmail.com");
-        resume.setContact(ContactType.GITHUB, "https://github.com/JavaWebinar");
-        resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/1");
-        resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/1/");
-        resume.setContact(ContactType.HOME_PAGE, "https://test.com/");
-        resume.setSections(SectionType.OBJECTIVE, new TextSection(OBJECTIVE));
-        resume.setSections(SectionType.PERSONAL, new TextSection(PERSONAL));
-        resume.setSections(SectionType.ACHIEVEMENT, new ListSection(List.of(ACHIEVEMENT_1, ACHIEVEMENT_2, ACHIEVEMENT_3, ACHIEVEMENT_4, ACHIEVEMENT_5, ACHIEVEMENT_6, ACHIEVEMENT_7)));
-        resume.setSections(SectionType.QUALIFICATIONS, new ListSection(List.of(QUALIFICATIONS_1, QUALIFICATIONS_2, QUALIFICATIONS_3, QUALIFICATIONS_4,
-                QUALIFICATIONS_5, QUALIFICATIONS_6, QUALIFICATIONS_7, QUALIFICATIONS_8, QUALIFICATIONS_9, QUALIFICATIONS_10, QUALIFICATIONS_11,
-                QUALIFICATIONS_12, QUALIFICATIONS_13, QUALIFICATIONS_14)));
-        resume.setSections(SectionType.EXPERIENCE, new OrganizationSection(List.of(ALCATEL, SIEMENS, ENKATA, YOTA, LUXOFT, RIT_CENTER, WRIKE, JAVA_OPS)));
-        resume.setSections(SectionType.EDUCATION, new OrganizationSection(List.of(EDUCATION_SCHOOL, EDUCATION_UNIVERSITY, EDUCATION_ALCATEL, EDUCATION_SIEMENS, EDUCATION_LUXOFT, EDUCATION_COURSERA)));
+//        resume.setContact(ContactType.HOME_PHONE, "+375171111111");
+//        resume.setContact(ContactType.PHONE, "+375171111111");
+//        resume.setContact(ContactType.MOBILE, "+375291111111");
+//        resume.setContact(ContactType.SKYPE, "Test.skype");
+//        resume.setContact(ContactType.MAIL, "Test@gmail.com");
+//        resume.setContact(ContactType.GITHUB, "https://github.com/JavaWebinar");
+//        resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/1");
+//        resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/1/");
+//        resume.setContact(ContactType.HOME_PAGE, "https://test.com/");
+//        resume.setSections(SectionType.OBJECTIVE, new TextSection(OBJECTIVE));
+//        resume.setSections(SectionType.PERSONAL, new TextSection(PERSONAL));
+//        resume.setSections(SectionType.ACHIEVEMENT, new ListSection(List.of(ACHIEVEMENT_1, ACHIEVEMENT_2, ACHIEVEMENT_3, ACHIEVEMENT_4, ACHIEVEMENT_5, ACHIEVEMENT_6, ACHIEVEMENT_7)));
+//        resume.setSections(SectionType.QUALIFICATIONS, new ListSection(List.of(QUALIFICATIONS_1, QUALIFICATIONS_2, QUALIFICATIONS_3, QUALIFICATIONS_4,
+//                QUALIFICATIONS_5, QUALIFICATIONS_6, QUALIFICATIONS_7, QUALIFICATIONS_8, QUALIFICATIONS_9, QUALIFICATIONS_10, QUALIFICATIONS_11,
+//                QUALIFICATIONS_12, QUALIFICATIONS_13, QUALIFICATIONS_14)));
+//        resume.setSections(SectionType.EXPERIENCE, new OrganizationSection(List.of(ALCATEL, SIEMENS, ENKATA, YOTA, LUXOFT, RIT_CENTER, WRIKE, JAVA_OPS)));
+//        resume.setSections(SectionType.EDUCATION, new OrganizationSection(List.of(EDUCATION_SCHOOL, EDUCATION_UNIVERSITY, EDUCATION_ALCATEL, EDUCATION_SIEMENS, EDUCATION_LUXOFT, EDUCATION_COURSERA)));
 
         return resume;
     }
