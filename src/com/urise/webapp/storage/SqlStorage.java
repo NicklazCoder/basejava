@@ -5,8 +5,7 @@ import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.SqlHelper;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,21 +37,15 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?, ?)", preparedStatement -> {
-            preparedStatement.setString(1, r.getUuid());
-            preparedStatement.setString(2, r.getFullName());
-            preparedStatement.execute();
+        sqlHelper.transactionalExecute(connection -> {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?, ?)")) {
+                preparedStatement.setString(1, r.getUuid());
+                preparedStatement.setString(2, r.getFullName());
+                preparedStatement.execute();
+            }
+            insertContacts(r, connection);
             return null;
         });
-        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-            sqlHelper.execute("INSERT INTO contact(type, value, resume_uuid) VALUES (?, ?, ?)", preparedStatement -> {
-                preparedStatement.setString(1, e.getKey().name());
-                preparedStatement.setString(2, e.getValue());
-                preparedStatement.setString(3, r.getUuid());
-                preparedStatement.execute();
-                return null;
-            });
-        }
     }
 
     @Override
@@ -112,5 +105,19 @@ public class SqlStorage implements Storage {
             return resultSet.getInt(1);
         });
 
+    }
+
+    private void insertContacts(Resume r, Connection connection) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO contact(type, value, resume_uuid) VALUES (?, ?, ?)")) {
+            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                preparedStatement.setString(1, e.getKey().name());
+                preparedStatement.setString(2, e.getValue());
+                preparedStatement.setString(3, r.getUuid());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
