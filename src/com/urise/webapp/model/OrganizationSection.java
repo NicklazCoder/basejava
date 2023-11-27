@@ -1,8 +1,10 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
 import java.util.List;
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;

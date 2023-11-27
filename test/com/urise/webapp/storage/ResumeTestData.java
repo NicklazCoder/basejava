@@ -144,8 +144,8 @@ public class ResumeTestData {
         resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/1");
         resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/1/");
         resume.setContact(ContactType.HOME_PAGE, "https://test.com/");
-//        resume.setSections(SectionType.OBJECTIVE, new TextSection(OBJECTIVE));
-//        resume.setSections(SectionType.PERSONAL, new TextSection(PERSONAL));
+        resume.setSections(SectionType.OBJECTIVE, new TextSection(OBJECTIVE));
+        resume.setSections(SectionType.PERSONAL, new TextSection(PERSONAL));
 //        resume.setSections(SectionType.ACHIEVEMENT, new ListSection(List.of(ACHIEVEMENT_1, ACHIEVEMENT_2, ACHIEVEMENT_3, ACHIEVEMENT_4, ACHIEVEMENT_5, ACHIEVEMENT_6, ACHIEVEMENT_7)));
 //        resume.setSections(SectionType.QUALIFICATIONS, new ListSection(List.of(QUALIFICATIONS_1, QUALIFICATIONS_2, QUALIFICATIONS_3, QUALIFICATIONS_4,
 //                QUALIFICATIONS_5, QUALIFICATIONS_6, QUALIFICATIONS_7, QUALIFICATIONS_8, QUALIFICATIONS_9, QUALIFICATIONS_10, QUALIFICATIONS_11,
