@@ -20,4 +20,14 @@ create table if not exists public.contact
 );
 create unique index if not exists contact_uuid_type_index
     on public.contact (resume_uuid, type);
-
+CREATE TABLE IF NOT EXISTS public.section (
+    id SERIAL CONSTRAINT section_pk PRIMARY KEY,
+    type TEXT NOT NULL,
+    context TEXT NOT NULL,
+    resume_uuid CHAR(36) NOT NULL
+        CONSTRAINT section_resume_uuid_fk
+            references public.resume(uuid)
+            ON UPDATE RESTRICT ON DELETE CASCADE
+);
+create unique index if not exists section_uuid_type_index
+    on public.section (resume_uuid, type);
