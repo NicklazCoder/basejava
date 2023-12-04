@@ -30,6 +30,11 @@ public class SqlStorage implements Storage {
     private final SqlExecutor sqlExecutor;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+//        try {
+//            Class.forName("org.postgresql.Driver");
+//        } catch (ClassNotFoundException e) {
+//            throw new IllegalStateException(e);
+//        }
         sqlExecutor = new SqlExecutor(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
