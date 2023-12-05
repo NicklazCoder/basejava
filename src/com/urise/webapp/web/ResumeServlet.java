@@ -25,40 +25,8 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        Writer writer = response.getWriter();
-        List<Resume> resumes = storage.getAllSorted();
-        writer.write(
-                """
-                        <html>
-                        <head>
-                            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                            <title>Список резюме:</title>
-                        </head>
-                        <body>
-                            <table border=1>
-                              <tr>
-                                 <th>Идентификатор</th>
-                                 <th>ФИО</th>
-                              </tr>
-                        """
-        );
-        for (Resume resume : resumes) {
-            writer.write(
-                    "<tr>\n" +
-                            "<td>" + resume.getUuid() + "</td>\n" +
-                            "<td>" + resume.getFullName() + "</td>\n" +
-                            "</tr>\n"
-            );
-        }
-        writer.write(
-                """
-                        </table>
-                        </body>
-                        </html>
-                        """
-        );
+        request.setAttribute("resumes", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
     }
 
     @Override
